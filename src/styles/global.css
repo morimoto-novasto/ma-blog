@@ -634,7 +634,7 @@ a:hover {
 .reading-rail__bar {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, var(--accent-soft), var(--accent);
+  background: linear-gradient(90deg, var(--accent-soft), var(--accent));
   transform-origin: left center;
   transition: width 80ms linear;
 }
