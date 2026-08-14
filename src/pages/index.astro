@@ -1,0 +1,79 @@
+---
+export const prerender = true;
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Timeline from '../components/Timeline.astro';
+import { getPublishedNotes } from '../lib/posts';
+
+const notes = await getPublishedNotes();
+const recent = notes.slice(0, 5);
+---
+
+<BaseLayout description="静かな余白に、手書きの思考を置く場所。Astro · TanStack · Cloudflare.">
+  <Header current="home" />
+  <main>
+    <section class="hero shell">
+      <div class="hero__plane" aria-hidden="true"></div>
+      <div class="hero__content">
+        <p class="eyebrow">personal notes</p>
+        <h1>間</h1>
+        <p>
+          騒がしいウェブの片隅に、余白のある読みものを。
+          スッと馴染む手触りと、あっと驚く使いやすさを、静かに重ねています。
+        </p>
+        <div class="cta-row">
+          <a class="btn btn--primary" href="/notes">ノートを読む</a>
+          <a class="btn btn--ghost" href="/explore">散策する</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell">
+      <div class="section__head">
+        <div>
+          <p class="eyebrow">timeline</p>
+          <h2>最近の思考</h2>
+        </div>
+        <a href="/notes">すべて見る</a>
+      </div>
+      <Timeline notes={recent} />
+    </section>
+
+    <section class="section shell">
+      <div class="section__head">
+        <div>
+          <p class="eyebrow">craft</p>
+          <h2>この場所の手触り</h2>
+        </div>
+      </div>
+      <div class="about-grid">
+        <div>
+          <div class="principle">
+            <h3>静かな部屋</h3>
+            <p>いいねもタイムライン競争もない。通りかかった人が、部屋の文章を自由に読むだけ。</p>
+          </div>
+          <div class="principle">
+            <h3>認知の予算を守る</h3>
+            <p>要旨・構造・集中モードで余計な負荷を減らし、考える余力を本文に渡す。</p>
+          </div>
+          <div class="principle">
+            <h3>終わりをデザインする</h3>
+            <p>Peak–End にならい、記事の終わりに温かい余韻と、隣の思考への橋を置く。</p>
+          </div>
+        </div>
+        <div>
+          <p class="eyebrow">stack</p>
+          <h2 class="display" style="margin:0.4rem 0 0.8rem;font-size:1.6rem;">Astro · TanStack · Cloudflare</h2>
+          <p style="color:var(--ink-mute);margin:0 0 1rem;">
+            静的に近い速さで届け、インタラクションが必要なところだけ React と TanStack で軽やかに動かす。
+            配信は Cloudflare。
+          </p>
+          <a class="btn btn--ghost" href="/about">設計思想を読む</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>

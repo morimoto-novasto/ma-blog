@@ -1,0 +1,20 @@
+---
+import type { Note } from '../lib/posts';
+import { formatDate } from '../lib/posts';
+
+interface Props {
+  note: Note;
+  contrast?: boolean;
+}
+
+const { note, contrast = false } = Astro.props;
+---
+
+<a href={`/notes/${note.id}`}>
+  <div class="timeline__meta">
+    <span class="mood">{contrast ? 'contrast' : note.data.mood}</span>
+    <time datetime={note.data.publishedAt.toISOString()}>{formatDate(note.data.publishedAt)}</time>
+  </div>
+  <strong>{note.data.title}</strong>
+  <span>{note.data.description}</span>
+</a>

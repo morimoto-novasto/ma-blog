@@ -1,0 +1,106 @@
+---
+export const prerender = true;
+
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import SerendipityCard from '../../components/SerendipityCard.astro';
+import ReadingProgress from '../../components/ReadingProgress';
+import FocusMode from '../../components/FocusMode';
+import ResumeReading from '../../components/ResumeReading';
+import KeyboardNav from '../../components/KeyboardNav';
+import {
+  formatDate,
+  getPublishedNotes,
+  pickSerendipity,
+  readingMinutes,
+} from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const notes = await getPublishedNotes();
+  return notes.map((note, index) => ({
+    params: { slug: note.id },
+    props: {
+      note,
+      prev: notes[index + 1],
+      next: notes[index - 1],
+      related: pickSerendipity(note, notes),
+    },
+  }));
+}
+
+const { note, prev, next, related } = Astro.props;
+const { Content } = await render(note);
+const minutes = readingMinutes(note.body ?? note.data.description);
+---
+
+<BaseLayout
+  title={note.data.title}
+  description={note.data.description}
+  ogType="article"
+>
+  <Header current="notes" />
+  <ReadingProgress client:load />
+  <FocusMode client:load />
+  <ResumeReading client:load noteId={note.id} />
+  <KeyboardNav
+    client:load
+    prevHref={prev ? `/notes/${prev.id}` : undefined}
+    nextHref={next ? `/notes/${next.id}` : undefined}
+  />
+
+  <main class="shell">
+    <article class="measure" data-article>
+      <header class="article-hero">
+        <p class="eyebrow">{note.data.mood}</p>
+        <h1>{note.data.title}</h1>
+        <div class="article-meta">
+          <time datetime={note.data.publishedAt.toISOString()}>
+            {formatDate(note.data.publishedAt)}
+          </time>
+          <span>約 {minutes} 分</span>
+          {
+            note.data.tags.map((t) => (
+              <a class="tag" href={`/explore?tag=${encodeURIComponent(t)}`}>
+                {t}
+              </a>
+            ))
+          }
+        </div>
+        {
+          note.data.gist && (
+            <p class="gist">
+              <strong>要旨 · </strong>
+              {note.data.gist}
+            </p>
+          )
+        }
+      </header>
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      <aside class="end-note">
+        <h2>ここまで読んでくれてありがとう</h2>
+        <p>
+          今日のピークは、たぶんこの余白の静けさそのものです。
+          よければ隣の思考にも、ゆっくり立ち寄ってみてください。
+        </p>
+      </aside>
+    </article>
+
+    <section class="serendipity measure">
+      <h2>隣の思考</h2>
+      <div class="serendipity__grid">
+        {
+          related.map((item, i) => (
+            <SerendipityCard note={item} contrast={i === related.length - 1} />
+          ))
+        }
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>

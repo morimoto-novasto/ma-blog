@@ -1,0 +1,44 @@
+---
+export const prerender = true;
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { formatDate, getPublishedNotes } from '../../lib/posts';
+
+const notes = await getPublishedNotes();
+---
+
+<BaseLayout title="Notes" description="手書きのノート一覧。">
+  <Header current="notes" />
+  <main class="shell" style="padding:2.5rem 0 4rem;">
+    <p class="eyebrow">notes</p>
+    <h1 class="display" style="margin:0.5rem 0 1.5rem;font-size:clamp(2rem,4vw,2.8rem);">ノート</h1>
+    <div class="note-list">
+      {
+        notes.map((note) => (
+          <article class="note-item">
+            <div class="timeline__meta">
+              <time datetime={note.data.publishedAt.toISOString()}>
+                {formatDate(note.data.publishedAt)}
+              </time>
+              <span class="mood">{note.data.mood}</span>
+            </div>
+            <h3>
+              <a href={`/notes/${note.id}`}>{note.data.title}</a>
+            </h3>
+            <p>{note.data.description}</p>
+            <div class="tags">
+              {note.data.tags.map((t) => (
+                <a class="tag" href={`/explore?tag=${encodeURIComponent(t)}`}>
+                  {t}
+                </a>
+              ))}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>

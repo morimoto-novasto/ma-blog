@@ -1,0 +1,31 @@
+---
+title: Astro と TanStack と Cloudflare の役割分担
+description: 静的に近い速さと、必要なところだけのインタラクション。
+publishedAt: 2026-08-10
+tags: [astro, tanstack, cloudflare]
+gist: 本文は Astro、散策は TanStack Query、縁の下は Cloudflare。
+mood: craft
+---
+
+スタックを足すほどサイトは重くなりがちです。ここでは役割をはっきり分けます。
+
+## Astro
+
+コンテンツとレイアウトの本体。Markdown / MDX の Content Collections、ほぼ静的な配信、部分的な React ハイドレーション。
+
+## TanStack
+
+Explore のフィルタに React Query を使う。初回データは Astro が渡し、以降は `/api/notes` をキャッシュつきで扱う。検索体験だけをアプリっぽく。
+
+## Cloudflare
+
+`@astrojs/cloudflare` アダプタで Workers へ。静的アセットは ASSETS バインディング。エッジで速い「部屋」を維持する。
+
+```ts
+// 役割のイメージ
+const page = astro.render(note);
+const garden = tanstack.query(notes);
+const edge = cloudflare.serve({ page, garden });
+```
+
+おしゃんなエンジニアリングとは、技術の展示ではなく、**触った瞬間の摩擦のなさ**だと捉えています。

@@ -1,0 +1,93 @@
+---
+export const prerender = true;
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="About" description="間 ma の設計思想。見た目とエンジニアリングの両面から。">
+  <Header current="about" />
+  <main class="shell" style="padding:2.5rem 0 4rem;">
+    <p class="eyebrow">about</p>
+    <h1 class="display" style="margin:0.5rem 0 1rem;font-size:clamp(2rem,4vw,2.8rem);">
+      間について
+    </h1>
+    <p style="color:var(--ink-mute);max-width:40rem;">
+      参照したのは hiroppy.me / sizu.me / catnose.me。
+      エンジニアリングの「あっと驚く使いやすさ」は、認知負荷・Peak–End・spacing/interleaving などの研究を個人ブログ体験へ翻訳しています。
+    </p>
+
+    <section class="section" style="padding-top:2.5rem;">
+      <p class="eyebrow">design DNA</p>
+      <h2 class="display" style="margin:0.4rem 0 1.2rem;font-size:1.7rem;">3サイトから借りた骨格</h2>
+      <div class="principle">
+        <h3>hiroppy.me — 明快な情報設計</h3>
+        <p>
+          Zen Kaku Gothic 系の読みやすさ、サイドバー/本文の静かな分割、Recent Updates と Works の並置。
+          「エンジニアの拠点」としての信頼感を、タイムラインとノート一覧に移植。
+        </p>
+      </div>
+      <div class="principle">
+        <h3>sizu.me — 静けさという高級感</h3>
+        <p>
+          白とグレー基調、交流を削ぎ落とした部屋のメタファー、ひかえめな購読。
+          騒がしさを足さず、手触りの微改善にコストを払う思想をコアに。
+        </p>
+      </div>
+      <div class="principle">
+        <h3>catnose.me — 人柄が滲むタイムライン</h3>
+        <p>
+          活動の年表が「その人を好きになる」入口になること。ソフトなブルーグレー、余白、実験場としての個人サイト。
+          ホームをダッシュボードではなく一人の物語として設計。
+        </p>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top:1rem;">
+      <p class="eyebrow">research → features</p>
+      <h2 class="display" style="margin:0.4rem 0 1.2rem;font-size:1.7rem;">研究から生えた機能の種</h2>
+      <div class="principle">
+        <h3>要旨（Signaling / Cognitive Load）</h3>
+        <p>
+          構造的手がかりは保持に中〜大の効果（メタ分析 g≈0.53）。記事冒頭の「要旨」で余計な探索負荷を下げ、理解に予算を回す。
+        </p>
+      </div>
+      <div class="principle">
+        <h3>集中モード（Progressive Disclosure）</h3>
+        <p>
+          スクロール中はクロムを隠し、必要なときだけ戻す。初見は単純、常連は f キーで強制フォーカス。
+        </p>
+      </div>
+      <div class="principle">
+        <h3>続きから読む（Open Loop Closure）</h3>
+        <p>
+          未完了のループは訪問のあいだワーキングメモリを蝕む。スクロール位置の再開で「戻ってきた自分」を優しく迎える。
+        </p>
+      </div>
+      <div class="principle">
+        <h3>Peak–End の余韻</h3>
+        <p>
+          体験の記憶はピークと終わりで決まる。プログレスは終盤を心地よく、記事末尾は温かいクロージャに。
+        </p>
+      </div>
+      <div class="principle">
+        <h3>隣の思考（Interleaving）</h3>
+        <p>
+          関連だけでなくムードの違う1本を混ぜる。対照が弁別を助け、著者の多面性が好きになる入口になる。
+        </p>
+      </div>
+      <div class="principle">
+        <h3>j / k（Expertise Reversal）</h3>
+        <p>
+          初心者向け導線を邪魔せず、慣れた人だけが加速できる。説明過多は熟達者を遅くする、という知見の翻訳。
+        </p>
+      </div>
+    </section>
+
+    <p style="margin-top:2rem;">
+      <a class="btn btn--primary" href="/notes">ノートへ</a>
+    </p>
+  </main>
+  <Footer />
+</BaseLayout>
